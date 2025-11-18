@@ -19,6 +19,8 @@ Aplicación interactiva de análisis de negocio construida con Streamlit que per
 
 ## 🚀 Instalación
 
+### Instalación Local
+
 1. **Clona el repositorio**:
 ```bash
 git clone https://github.com/jupabego97/analista.git
@@ -53,6 +55,35 @@ pip install -r requirements.txt
    - Edita el archivo `.env` y configura:
      - `DATABASE_URL`: URL de conexión a tu base de datos PostgreSQL
      - `GOOGLE_API_KEY` o `GEMINI_API_KEY`: Tu API key de Google Gemini
+
+### Despliegue en Railway
+
+La aplicación está lista para desplegarse en Railway. Sigue estos pasos:
+
+1. **Conecta tu repositorio de GitHub a Railway**:
+   - Ve a [Railway Dashboard](https://railway.app/dashboard)
+   - Crea un nuevo proyecto
+   - Selecciona "Deploy from GitHub repo"
+   - Conecta el repositorio `jupabego97/analista`
+
+2. **Configura las variables de entorno en Railway**:
+   - Ve a la pestaña **Variables** de tu servicio
+   - Agrega:
+     - `DATABASE_URL`: URL de tu base de datos PostgreSQL
+     - `GOOGLE_API_KEY` o `GEMINI_API_KEY`: Tu API key de Google Gemini
+
+3. **Railway detectará automáticamente**:
+   - El `Procfile` con el comando de inicio
+   - El `requirements.txt` para instalar dependencias
+   - El `runtime.txt` para la versión de Python
+
+4. **Genera un dominio público**:
+   - Ve a **Settings** → **Generate Domain**
+   - Railway creará una URL pública para tu aplicación
+
+5. **¡Listo!** Tu aplicación estará disponible en la URL generada.
+
+**Nota:** Railway usa automáticamente el puerto asignado a través de la variable `$PORT`. El `Procfile` ya está configurado para usar esta variable.
 
 ## 🗄️ Estructura de la Base de Datos
 
