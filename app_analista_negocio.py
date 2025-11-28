@@ -206,7 +206,7 @@ def get_gemini_llm(api_key: str):
     
     try:
         return ChatGoogleGenerativeAI(
-            model="gemini-flash-latest",
+            model="gemini-3-pro-preview",
             google_api_key=api_key,
             temperature=0,
             convert_system_message_to_human=True
