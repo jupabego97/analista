@@ -7,6 +7,7 @@ Aplicación interactiva de análisis de negocio construida con Streamlit que per
 - **Preguntas en lenguaje natural**: Haz preguntas sobre tu negocio en español y recibe análisis completos
 - **Análisis automático con IA**: Utiliza Google Gemini para interpretar consultas y generar análisis inteligentes
 - **Visualizaciones automáticas**: Genera gráficos de líneas, barras, tortas, scatter plots e histogramas según el contexto
+- **Rutas críticas curadas**: Preguntas clave del gerente (ventas de ayer, compras por proveedor, agotados 7 días) con SQL validado
 - **Conexión a PostgreSQL**: Se conecta a tu base de datos PostgreSQL para análisis en tiempo real
 - **Exportación de datos**: Descarga los resultados en formato CSV o Excel
 - **Interfaz intuitiva**: Interfaz moderna y fácil de usar construida con Streamlit
@@ -161,6 +162,7 @@ La aplicación detecta automáticamente el tipo de visualización más apropiada
 
 - La aplicación **solo permite consultas SELECT** (lectura)
 - Se valida que no se ejecuten comandos peligrosos (DROP, DELETE, UPDATE, INSERT, etc.)
+- Se restringe el acceso a tablas permitidas (`facturas`, `facturas_proveedor`, `items`) y se aplica `LIMIT` por defecto
 - Las credenciales se manejan mediante variables de entorno
 - La API Key puede configurarse en `.env` o en la interfaz (solo para la sesión)
 
@@ -173,6 +175,11 @@ La aplicación detecta automáticamente el tipo de visualización más apropiada
 - **SQLAlchemy**: ORM para Python
 - **Plotly**: Librería de visualización interactiva
 - **Pandas**: Manipulación y análisis de datos
+
+
+## 🧭 Plan de Mejora Arquitectónica
+
+Se añadió un plan técnico y de evolución del proyecto en `PLAN_MEJORA.md`, basado en enfoque de fiabilidad, seguridad SQL y operación en Railway.
 
 ## 📝 Licencia
 
