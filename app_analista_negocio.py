@@ -24,6 +24,9 @@ from sqlalchemy import create_engine, text
 
 import streamlit as st
 
+from core.sql_policy import enforce_default_limit, validate_sql_query
+from services.curated_queries import detect_curated_query
+
 # Cargar variables de entorno
 load_dotenv()
 
@@ -412,26 +415,6 @@ def extract_sql_from_response(response: str) -> Optional[str]:
     
     return None
 
-def validate_sql_query(sql: str) -> Tuple[bool, Optional[str]]:
-    """Valida que la consulta SQL sea segura (solo SELECT)."""
-    sql_upper = sql.upper().strip()
-    
-    # Lista de comandos peligrosos
-    dangerous_keywords = [
-        "DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE",
-        "CREATE", "GRANT", "REVOKE", "EXEC", "EXECUTE", "CALL"
-    ]
-    
-    for keyword in dangerous_keywords:
-        if keyword in sql_upper:
-            return False, f"Comando no permitido: {keyword}"
-    
-    # Debe empezar con SELECT
-    if not sql_upper.startswith("SELECT"):
-        return False, "Solo se permiten consultas SELECT"
-    
-    return True, None
-
 def extract_visualization_hint(response: str) -> Optional[str]:
     """Extrae la sugerencia de visualización de la respuesta."""
     hints = ["GRAFICO_LINEA", "GRAFICO_BARRAS", "GRAFICO_TORTA", "GRAFICO_SCATTER", "GRAFICO_HISTOGRAMA"]
@@ -439,6 +422,52 @@ def extract_visualization_hint(response: str) -> Optional[str]:
         if hint in response:
             return hint
     return None
+
+
+
+def execute_safe_query(db_engine, sql_query: str, params: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
+    """Valida y ejecuta una consulta SQL segura de solo lectura."""
+    is_valid, error_msg = validate_sql_query(sql_query)
+    if not is_valid:
+        raise ValueError(error_msg)
+
+    safe_sql = enforce_default_limit(sql_query)
+    with db_engine.connect() as conn:
+        return pd.read_sql(text(safe_sql), conn, params=params or {})
+
+
+def render_curated_response(query: str, db_engine):
+    """Ejecuta consultas curadas para preguntas críticas y renderiza la respuesta."""
+    curated = detect_curated_query(query)
+    if not curated:
+        return False
+
+    st.markdown("### 📊 Análisis del Analista")
+    st.markdown(f"**Consulta crítica detectada:** `{curated.key}`\n\n{curated.explanation}")
+
+    try:
+        df = execute_safe_query(db_engine, curated.sql, curated.params)
+        if df.empty:
+            st.info("No se encontraron datos para esta consulta crítica.")
+            return True
+
+        st.markdown("---")
+        st.markdown("### 📋 Datos Obtenidos")
+        st.dataframe(df, use_container_width=True)
+
+        if st.session_state.get("auto_visualize", True):
+            fig = create_visualization(df, curated.viz_hint, title=f"Análisis crítico: {query[:50]}...")
+            if fig:
+                st.markdown("---")
+                st.markdown("### 📈 Visualización")
+                st.plotly_chart(fig, use_container_width=True)
+
+        st.session_state["last_query_results"] = df
+        st.session_state["last_query"] = query
+        return True
+    except Exception as e:
+        st.warning(f"⚠️ No se pudo ejecutar la consulta crítica: {e}")
+        return True
 
 def render_agent_response(response: str, query: str, db_engine):
     """Renderiza la respuesta del agente con texto, tablas y gráficos."""
@@ -450,15 +479,7 @@ def render_agent_response(response: str, query: str, db_engine):
     sql_query = extract_sql_from_response(response)
     if sql_query:
         try:
-            # Validar consulta SQL
-            is_valid, error_msg = validate_sql_query(sql_query)
-            if not is_valid:
-                st.warning(f"⚠️ {error_msg}")
-                return
-            
-            # Ejecutar consulta con timeout
-            with db_engine.connect() as conn:
-                df = pd.read_sql(text(sql_query), conn)
+            df = execute_safe_query(db_engine, sql_query)
             
             if not df.empty:
                 st.markdown("---")
@@ -689,34 +710,41 @@ def main():
         with st.chat_message("user"):
             st.markdown(question)
         
-        # Procesar pregunta con el agente
+        # Procesar pregunta: primero rutas curadas, luego agente LLM
         with st.chat_message("assistant"):
             with st.spinner("🤔 Analizando tu pregunta..."):
                 try:
-                    # Crear callback handler para Streamlit
-                    callback_handler = StreamlitCallbackHandler(st.container())
-                    
-                    # Ejecutar agente
-                    response = agent.invoke(
-                        {"input": question},
-                        {"callbacks": [callback_handler]}
-                    )
-                    
-                    # Obtener respuesta
-                    if isinstance(response, dict):
-                        answer = response.get("output", str(response))
+                    curated_handled = render_curated_response(question, db_engine)
+                    if curated_handled:
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": "Consulta crítica resuelta con ruta curada y validación SQL."
+                        })
                     else:
-                        answer = str(response)
-                    
-                    # Renderizar respuesta
-                    render_agent_response(answer, question, db_engine)
-                    
-                    # Guardar en historial
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": answer
-                    })
-                    
+                        # Crear callback handler para Streamlit
+                        callback_handler = StreamlitCallbackHandler(st.container())
+
+                        # Ejecutar agente
+                        response = agent.invoke(
+                            {"input": question},
+                            {"callbacks": [callback_handler]}
+                        )
+
+                        # Obtener respuesta
+                        if isinstance(response, dict):
+                            answer = response.get("output", str(response))
+                        else:
+                            answer = str(response)
+
+                        # Renderizar respuesta
+                        render_agent_response(answer, question, db_engine)
+
+                        # Guardar en historial
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": answer
+                        })
+
                 except Exception as e:
                     error_msg = f"❌ Error procesando la pregunta: {e}"
                     st.error(error_msg)
