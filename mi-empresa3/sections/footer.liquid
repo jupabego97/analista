@@ -1,0 +1,142 @@
+{% comment %}Footer - NANO Premium v5{% endcomment %}
+
+<footer class="site-footer site-footer--premium" role="contentinfo" data-section-id="{{ section.id }}">
+  <div class="site-footer__grid">
+    <div>
+      {%- if settings.logo != blank -%}
+        <img src="{{ settings.logo | image_url: width: 220 }}" alt="{{ shop.name }}" class="site-footer__logo" loading="lazy">
+      {%- endif -%}
+      <p class="site-footer__lead">
+        {{ section.settings.brand_description | default: "Nanotronics: tecnologia premium en Colombia, con respaldo real, entrega rapida y experiencia de compra confiable." }}
+      </p>
+      <div class="site-footer__social">
+        <a href="{{ settings.social_instagram_link | default: '#' }}" aria-label="Instagram">Instagram</a>
+        <a href="{{ settings.social_facebook_link | default: '#' }}" aria-label="Facebook">Facebook</a>
+        <a href="{{ settings.social_tiktok_link | default: '#' }}" aria-label="TikTok">TikTok</a>
+        <a href="{{ settings.social_youtube_link | default: '#' }}" aria-label="YouTube">YouTube</a>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="site-footer__title">Categorias</h4>
+      <ul class="site-footer__list">
+        <li><a href="/collections/computadores">Computadores</a></li>
+        <li><a href="/collections/celulares">Celulares</a></li>
+        <li><a href="/collections/audio">Audio</a></li>
+        <li><a href="/collections/accesorios">Accesorios</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="site-footer__title">Soporte</h4>
+      <ul class="site-footer__list">
+        <li><a href="/pages/preguntas-frecuentes">Preguntas frecuentes</a></li>
+        <li><a href="/pages/garantia">Garantia y devoluciones</a></li>
+        <li><a href="/pages/estado-pedido">Estado de pedido</a></li>
+        <li><a href="/pages/contacto">Contacto</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="site-footer__title">Contacto</h4>
+      <ul class="site-footer__list">
+        <li>{{ section.settings.contact_phone | default: "+57 323 6826910" }}</li>
+        <li>{{ section.settings.contact_email | default: "nanotronicsalsondelatecnologia@gmail.com" }}</li>
+        <li>{{ section.settings.contact_city | default: "Medellin, Colombia" }}</li>
+      </ul>
+      <p class="site-footer__legal-small">{{ section.settings.company_legal | default: "Razon social: Nanotronics SAS - NIT 900000000-0" }}</p>
+    </div>
+  </div>
+
+  <div class="site-footer__payments">
+    <span>Medios de pago:</span>
+    <span>Visa</span><span>Mastercard</span><span>PSE</span><span>Efecty</span><span>Nequi</span>
+  </div>
+
+  <div class="site-footer__bottom">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados.</p>
+    <nav class="site-footer__links" aria-label="Links del pie de pagina">
+      <a href="/policies/privacy-policy" class="site-footer__link">Politica de privacidad</a>
+      <a href="/policies/terms-of-service" class="site-footer__link">Terminos y condiciones</a>
+      <a href="/pages/sic" class="site-footer__link">Superintendencia de Industria y Comercio</a>
+    </nav>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Descripcion de marca",
+      "default": "Nanotronics: tecnologia premium en Colombia, con respaldo real, entrega rapida y experiencia de compra confiable."
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Telefono",
+      "default": "+57 323 6826910"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email",
+      "default": "nanotronicsalsondelatecnologia@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_city",
+      "label": "Ciudad",
+      "default": "Medellin, Colombia"
+    },
+    {
+      "type": "text",
+      "id": "company_legal",
+      "label": "Texto legal empresa",
+      "default": "Razon social: Nanotronics SAS - NIT 900000000-0"
+    },
+    {
+      "type": "text",
+      "id": "schedule_1",
+      "label": "Horario 1",
+      "default": "Lunes - Sabado: 10:00 AM - 8:00 PM"
+    },
+    {
+      "type": "text",
+      "id": "schedule_2",
+      "label": "Horario 2",
+      "default": "Domingos: 10:00 AM - 7:00 PM"
+    },
+    {
+      "type": "text",
+      "id": "schedule_3",
+      "label": "Horario 3",
+      "default": "Respuesta promedio: 24h"
+    },
+    {
+      "type": "text",
+      "id": "link_1_label",
+      "label": "Link 1 texto",
+      "default": "PRIVACIDAD"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_label",
+      "label": "Link 2 texto",
+      "default": "TERMINOS"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link 2 URL"
+    }
+  ]
+}
+{% endschema %}

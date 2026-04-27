@@ -1,0 +1,56 @@
+{% comment %}Testimonials - NANO Premium{% endcomment %}
+<section class="testimonials" data-section-id="{{ section.id }}" data-testimonials>
+  <div class="testimonials__head">
+    <p>{{ section.settings.eyebrow }}</p>
+    <h2>{{ section.settings.title }}</h2>
+    <span>{{ section.settings.subtitle }}</span>
+  </div>
+
+  <div class="testimonials__track">
+    {%- for block in section.blocks -%}
+      <article class="testimonial-card{% if forloop.first %} is-active{% endif %}" data-testimonial {{ block.shopify_attributes }}>
+        <p class="testimonial-card__rating">{{ block.settings.rating }}</p>
+        <blockquote>"{{ block.settings.quote }}"</blockquote>
+        <p class="testimonial-card__author">{{ block.settings.author }}</p>
+      </article>
+    {%- endfor -%}
+  </div>
+
+  <div class="testimonials__dots">
+    {%- for block in section.blocks -%}
+      <button type="button" data-testimonial-dot="{{ forloop.index0 }}" class="{% if forloop.first %}is-active{% endif %}" aria-label="Testimonio {{ forloop.index }}"></button>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Clientes felices" },
+    { "type": "text", "id": "title", "label": "Titulo", "default": "Dejamos que nuestros clientes hablen" },
+    { "type": "text", "id": "subtitle", "label": "Subtitulo", "default": "Basado en miles de compras verificadas" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonio",
+      "settings": [
+        { "type": "text", "id": "rating", "label": "Rating", "default": "★★★★★" },
+        { "type": "textarea", "id": "quote", "label": "Reseña", "default": "Excelente servicio, llego rapido y el equipo impecable." },
+        { "type": "text", "id": "author", "label": "Autor", "default": "Cliente Nanotronics" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

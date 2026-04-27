@@ -1,0 +1,30 @@
+{% comment %}Newsletter - NANO Premium{% endcomment %}
+<section class="newsletter-premium" data-section-id="{{ section.id }}">
+  <div class="newsletter-premium__inner">
+    <div class="newsletter-premium__content">
+      <p>{{ section.settings.eyebrow }}</p>
+      <h2>{{ section.settings.title }}</h2>
+      <span>{{ section.settings.subtitle }}</span>
+    </div>
+    {%- form 'customer', class: 'newsletter-premium__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="Tu correo electronico" required>
+      <button type="submit">{{ section.settings.button_label | default: 'Suscribirme' }}</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter premium",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Comunidad Nanotronics" },
+    { "type": "text", "id": "title", "label": "Titulo", "default": "Suscribete y recibe 10% OFF en tu primera compra" },
+    { "type": "text", "id": "subtitle", "label": "Subtitulo", "default": "Accede primero a lanzamientos y promociones exclusivas." },
+    { "type": "text", "id": "button_label", "label": "Texto boton", "default": "Quiero mi descuento" }
+  ],
+  "presets": [
+    { "name": "Newsletter premium" }
+  ]
+}
+{% endschema %}

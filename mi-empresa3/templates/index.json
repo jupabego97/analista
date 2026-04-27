@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "hero": {
+      "type": "main-hero",
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "badge": "NUEVO",
+            "title": "El futuro esta en tus manos con Nanotronics",
+            "subtitle": "Estrena tecnologia premium con entrega rapida y cuotas flexibles.",
+            "cta_label": "Comprar ahora",
+            "cta_url": "shopify://collections/all"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "badge": "TOP VENTA",
+            "title": "iPhone, MacBook y audio en oferta",
+            "subtitle": "Descuentos especiales y garantia en cada compra.",
+            "cta_label": "Ver ofertas",
+            "cta_url": "shopify://collections/all"
+          }
+        }
+      }
+    },
+    "trust-bar": {
+      "type": "trust-bar",
+      "blocks": {
+        "trust_1": { "type": "item", "settings": { "icon": "🚚", "title": "Envio express", "description": "En ciudades principales" } },
+        "trust_2": { "type": "item", "settings": { "icon": "💳", "title": "Hasta 24 cuotas", "description": "Con bancos aliados" } },
+        "trust_3": { "type": "item", "settings": { "icon": "🛡️", "title": "Garantia oficial", "description": "Soporte postventa real" } },
+        "trust_4": { "type": "item", "settings": { "icon": "🔐", "title": "Pago seguro", "description": "Checkout cifrado" } }
+      },
+      "block_order": ["trust_1", "trust_2", "trust_3", "trust_4"],
+      "settings": {}
+    },
+    "category-grid": {
+      "type": "category-grid",
+      "blocks": {
+        "cat_1": { "type": "category", "settings": { "title": "Computadores", "cta": "Ver equipos" } },
+        "cat_2": { "type": "category", "settings": { "title": "Celulares", "cta": "Ver smartphones" } },
+        "cat_3": { "type": "category", "settings": { "title": "Audio", "cta": "Escuchar mas" } },
+        "cat_4": { "type": "category", "settings": { "title": "Accesorios", "cta": "Completa tu setup" } }
+      },
+      "block_order": ["cat_1", "cat_2", "cat_3", "cat_4"],
+      "settings": {
+        "eyebrow": "Compra por categoria",
+        "title": "Encuentra tu proximo dispositivo"
+      }
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Catálogo",
+        "title": "Nuestros productos",
+        "filter_tags": "computadores, tablets, parlantes, accesorios",
+        "products_to_show": 6,
+        "show_view_all": true
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "settings": {
+        "benefit_1_title": "Envíos a todo Colombia",
+        "benefit_1_desc": "Despachos rápidos en todo el país",
+        "benefit_2_title": "Garantía directa",
+        "benefit_2_desc": "Respaldo total en cada producto",
+        "benefit_3_title": "Devoluciones fáciles",
+        "benefit_3_desc": "Sin complicaciones en 30 días",
+        "benefit_4_title": "Soporte 24/7",
+        "benefit_4_desc": "Atención por WhatsApp y correo"
+      }
+    },
+    "promo-banner": {
+      "type": "promo-banner",
+      "blocks": {
+        "promo_1": { "type": "banner", "settings": { "badge": "NUEVO", "title": "Lo mejor en Apple y accesorios", "description": "Descubre lanzamientos y descuentos exclusivos cada semana." } },
+        "promo_2": { "type": "banner", "settings": { "badge": "FINANCIACION", "title": "Paga comodo a cuotas", "description": "Compra hoy y paga en plazos con aliados financieros." } }
+      },
+      "block_order": ["promo_1", "promo_2"],
+      "settings": {}
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "t_1": { "type": "testimonial", "settings": { "rating": "★★★★★", "quote": "Compre mi laptop y llego en menos de 24 horas.", "author": "Andres M." } },
+        "t_2": { "type": "testimonial", "settings": { "rating": "★★★★★", "quote": "Buena asesoria y excelente garantia.", "author": "Luisa C." } },
+        "t_3": { "type": "testimonial", "settings": { "rating": "★★★★☆", "quote": "Precios competitivos y proceso de compra sencillo.", "author": "Carlos P." } }
+      },
+      "block_order": ["t_1", "t_2", "t_3"],
+      "settings": {
+        "eyebrow": "Opiniones reales",
+        "title": "Clientes que confian en Nanotronics",
+        "subtitle": "Basado en compras verificadas"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Comunidad Nanotronics",
+        "title": "Suscribete y recibe 10% OFF",
+        "subtitle": "Obtiene acceso temprano a lanzamientos y promociones.",
+        "button_label": "Quiero mi descuento"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust-bar",
+    "category-grid",
+    "featured-products",
+    "promo-banner",
+    "testimonials",
+    "benefits",
+    "newsletter"
+  ]
+}

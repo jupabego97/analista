@@ -1,0 +1,109 @@
+{% comment %}Benefits Bar — Brutalista NANO v3.0{% endcomment %}
+
+<div class="benefits-bar" data-section-id="{{ section.id }}">
+  <div class="benefits-bar__inner">
+
+    <div class="benefit-item">
+      <div class="benefit-item__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+      </div>
+      <div class="benefit-item__text">
+        <p class="benefit-item__title">{{ section.settings.benefit_1_title | default: 'ENVÍOS A TODO COLOMBIA' }}</p>
+        <p class="benefit-item__desc">{{ section.settings.benefit_1_desc | default: 'Despachos rápidos en Antioquia' }}</p>
+      </div>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-item__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7z"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
+      <div class="benefit-item__text">
+        <p class="benefit-item__title">{{ section.settings.benefit_2_title | default: 'GARANTÍA DIRECTA' }}</p>
+        <p class="benefit-item__desc">{{ section.settings.benefit_2_desc | default: 'Respaldo total en cada producto' }}</p>
+      </div>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-item__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M20 20v-4a7 7 0 0 0-7-7H4"/></svg>
+      </div>
+      <div class="benefit-item__text">
+        <p class="benefit-item__title">{{ section.settings.benefit_3_title | default: 'DEVOLUCIONES FÁCILES' }}</p>
+        <p class="benefit-item__desc">{{ section.settings.benefit_3_desc | default: 'Sin complicaciones en 30 días' }}</p>
+      </div>
+    </div>
+
+    <div class="benefit-item">
+      <div class="benefit-item__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+      </div>
+      <div class="benefit-item__text">
+        <p class="benefit-item__title">{{ section.settings.benefit_4_title | default: 'SOPORTE 24/7' }}</p>
+        <p class="benefit-item__desc">{{ section.settings.benefit_4_desc | default: 'Atención por WhatsApp y email' }}</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Beneficios",
+  "settings": [
+    {
+      "type": "text",
+      "id": "benefit_1_title",
+      "label": "Título beneficio 1",
+      "default": "ENVÍOS A TODO COLOMBIA"
+    },
+    {
+      "type": "text",
+      "id": "benefit_1_desc",
+      "label": "Descripción beneficio 1",
+      "default": "Despachos rápidos en Antioquia"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_title",
+      "label": "Título beneficio 2",
+      "default": "GARANTÍA DIRECTA"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_desc",
+      "label": "Descripción beneficio 2",
+      "default": "Respaldo total en cada producto"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_title",
+      "label": "Título beneficio 3",
+      "default": "DEVOLUCIONES FÁCILES"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_desc",
+      "label": "Descripción beneficio 3",
+      "default": "Sin complicaciones en 30 días"
+    },
+    {
+      "type": "text",
+      "id": "benefit_4_title",
+      "label": "Título beneficio 4",
+      "default": "SOPORTE 24/7"
+    },
+    {
+      "type": "text",
+      "id": "benefit_4_desc",
+      "label": "Descripción beneficio 4",
+      "default": "Atención por WhatsApp y email"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beneficios",
+      "category": "Beneficios"
+    }
+  ]
+}
+{% endschema %}

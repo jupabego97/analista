@@ -1,0 +1,43 @@
+{% comment %}Trust bar - NANO Premium{% endcomment %}
+<section class="trust-bar" data-section-id="{{ section.id }}">
+  <div class="trust-bar__inner">
+    {%- for block in section.blocks -%}
+      <div class="trust-item" {{ block.shopify_attributes }}>
+        <div class="trust-item__icon">{{ block.settings.icon }}</div>
+        <div class="trust-item__text">
+          <p class="trust-item__title">{{ block.settings.title }}</p>
+          <p class="trust-item__desc">{{ block.settings.description }}</p>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust bar",
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icono (emoji o texto)", "default": "🚚" },
+        { "type": "text", "id": "title", "label": "Titulo", "default": "Envio express Colombia" },
+        { "type": "text", "id": "description", "label": "Descripcion", "default": "Recibe rapido en principales ciudades" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust bar",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "🚚", "title": "Envio express", "description": "Entrega rapida nacional" } },
+        { "type": "item", "settings": { "icon": "💳", "title": "Hasta 24 cuotas", "description": "Financiacion en bancos aliados" } },
+        { "type": "item", "settings": { "icon": "🛡️", "title": "Garantia oficial", "description": "Respaldo en cada compra" } },
+        { "type": "item", "settings": { "icon": "🔐", "title": "Pago seguro", "description": "Checkout protegido por Shopify" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+{% comment %}Promo banner - NANO Premium{% endcomment %}
+<section class="promo-banner" data-section-id="{{ section.id }}">
+  <div class="promo-banner__grid">
+    {%- for block in section.blocks -%}
+      <article class="promo-card" {{ block.shopify_attributes }}>
+        <div class="promo-card__content">
+          {%- if block.settings.badge != blank -%}
+            <p class="promo-card__badge">{{ block.settings.badge }}</p>
+          {%- endif -%}
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.description }}</p>
+          <a href="{{ block.settings.url | default: '/collections/all' }}">{{ block.settings.cta | default: 'Ver oferta' }}</a>
+        </div>
+        <div class="promo-card__media">
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 900 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+          {%- endif -%}
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promo banner",
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        { "type": "text", "id": "badge", "label": "Badge", "default": "NUEVO" },
+        { "type": "text", "id": "title", "label": "Titulo", "default": "MacBook y iPhone en promo" },
+        { "type": "textarea", "id": "description", "label": "Descripcion", "default": "Aprovecha descuentos y cuotas sin interes en referencias seleccionadas." },
+        { "type": "text", "id": "cta", "label": "Texto CTA", "default": "Ver promociones" },
+        { "type": "url", "id": "url", "label": "URL" },
+        { "type": "image_picker", "id": "image", "label": "Imagen" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo banner",
+      "blocks": [
+        { "type": "banner" },
+        { "type": "banner", "settings": { "badge": "TOP VENTA", "title": "Audio y wearables" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

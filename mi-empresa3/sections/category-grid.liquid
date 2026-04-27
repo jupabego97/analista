@@ -1,0 +1,58 @@
+{% comment %}Category grid - NANO Premium{% endcomment %}
+<section class="category-grid-section" data-section-id="{{ section.id }}">
+  <div class="category-grid-section__head">
+    <p>{{ section.settings.eyebrow }}</p>
+    <h2>{{ section.settings.title }}</h2>
+  </div>
+  <div class="category-grid">
+    {%- for block in section.blocks -%}
+      <a href="{{ block.settings.url | default: '/collections/all' }}" class="category-card" {{ block.shopify_attributes }}>
+        <div class="category-card__media">
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 700 }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+          {%- else -%}
+            <div class="category-card__placeholder"></div>
+          {%- endif -%}
+        </div>
+        <div class="category-card__overlay">
+          <h3>{{ block.settings.title }}</h3>
+          <span>{{ block.settings.cta | default: 'Explorar' }}</span>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category grid",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Compra por categoria" },
+    { "type": "text", "id": "title", "label": "Titulo", "default": "Lo que buscas, mas rapido" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoria",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titulo", "default": "Computadores" },
+        { "type": "text", "id": "cta", "label": "Texto CTA", "default": "Ver mas" },
+        { "type": "url", "id": "url", "label": "Enlace" },
+        { "type": "image_picker", "id": "image", "label": "Imagen" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Category grid",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Computadores" } },
+        { "type": "category", "settings": { "title": "Celulares" } },
+        { "type": "category", "settings": { "title": "Audio" } },
+        { "type": "category", "settings": { "title": "Accesorios" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

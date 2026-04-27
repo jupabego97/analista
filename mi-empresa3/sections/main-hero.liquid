@@ -1,0 +1,109 @@
+{% comment %}Hero slider - NANO Premium v5.0{% endcomment %}
+
+<section class="hero-slider" data-section-id="{{ section.id }}" data-hero-slider data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.autoplay_speed }}">
+  <div class="hero-slider__track">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        <article class="hero-slide{% if forloop.first %} is-active{% endif %}" data-hero-slide {{ block.shopify_attributes }}>
+          <div class="hero-slide__content">
+            {%- if block.settings.badge != blank -%}
+              <p class="hero-slide__badge">{{ block.settings.badge }}</p>
+            {%- endif -%}
+            <h1 class="hero-slide__title">{{ block.settings.title | default: 'Tecnologia premium para Colombia' }}</h1>
+            <p class="hero-slide__subtitle">{{ block.settings.subtitle | default: 'Estrena hoy con garantia oficial, envios rapidos y pago seguro.' }}</p>
+            <div class="hero-slide__actions">
+              <a href="{{ block.settings.cta_url | default: '/collections/all' }}" class="hero__cta">
+                {{ block.settings.cta_label | default: 'Comprar ahora' }}
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="hero-slide__media">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.title | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            {%- else -%}
+              <div class="hero-slide__placeholder">
+                <span>NANOTRONICS</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    {%- else -%}
+      <article class="hero-slide is-active" data-hero-slide>
+        <div class="hero-slide__content">
+          <p class="hero-slide__badge">NUEVO</p>
+          <h1 class="hero-slide__title">Lo ultimo en tecnologia para tu dia a dia</h1>
+          <p class="hero-slide__subtitle">Compra celulares, computadores y accesorios con envios a toda Colombia y financiamiento en cuotas.</p>
+          <a href="/collections/all" class="hero__cta">Ver catalogo</a>
+        </div>
+        <div class="hero-slide__media">
+          <div class="hero-slide__placeholder"><span>NANOTRONICS</span></div>
+        </div>
+      </article>
+    {%- endif -%}
+  </div>
+
+  <button class="hero-slider__arrow hero-slider__arrow--prev" type="button" data-hero-prev aria-label="Slide anterior">
+    &#10094;
+  </button>
+  <button class="hero-slider__arrow hero-slider__arrow--next" type="button" data-hero-next aria-label="Siguiente slide">
+    &#10095;
+  </button>
+
+  <div class="hero-slider__dots" aria-label="Indicadores del slider">
+    {%- for block in section.blocks -%}
+      <button type="button" data-hero-dot="{{ forloop.index0 }}" class="{% if forloop.first %}is-active{% endif %}" aria-label="Ir al slide {{ forloop.index }}"></button>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay del slider",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Velocidad autoplay",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "s"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "text", "id": "badge", "label": "Badge", "default": "OFERTA" },
+        { "type": "text", "id": "title", "label": "Titulo", "default": "iPhone y MacBook con las mejores promos" },
+        { "type": "textarea", "id": "subtitle", "label": "Subtitulo", "default": "Financia hasta en 24 cuotas y recibe en tiempo record." },
+        { "type": "text", "id": "cta_label", "label": "Texto CTA", "default": "Comprar ahora" },
+        { "type": "url", "id": "cta_url", "label": "URL CTA" },
+        { "type": "image_picker", "id": "image", "label": "Imagen del slide" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "category": "Hero",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,278 @@
+{% comment %}Featured Products — Clean NANO v4.0{% endcomment %}
+
+{%- liquid
+  assign collection_handle = section.settings.collection
+  if collection_handle != blank
+    assign col = collections[collection_handle]
+  endif
+  assign products_to_show = section.settings.products_to_show | default: 6
+  assign default_tags = 'computadores, perifericos, audio, cables'
+  assign filter_tags_raw = section.settings.filter_tags | default: default_tags
+-%}
+
+<div data-filter-container>
+  {%- if section.settings.show_filters -%}
+  <div class="filter-tabs">
+    <div class="filter-tabs__inner" id="filter-tabs">
+      <button class="filter-tab active" data-filter="all" type="button">Todos</button>
+      {%- for tag in filter_tags_raw | split: ',' -%}
+        {%- assign tag_clean = tag | strip -%}
+        {%- if tag_clean != blank -%}
+          <button class="filter-tab" data-filter="{{ tag_clean | handleize }}" type="button">{{ tag_clean | capitalize }}</button>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+<section class="product-section" data-section-id="{{ section.id }}">
+  <div class="product-section__header">
+    <p class="product-section__eyebrow">{{ section.settings.eyebrow | default: 'Catálogo' }}</p>
+    <h2 class="product-section__title">{{ section.settings.title | default: 'Productos destacados' }}</h2>
+  </div>
+
+  <div class="product-grid" id="product-grid-featured">
+    {%- if col != blank and col.products.size > 0 -%}
+      {%- for product in col.products limit: products_to_show -%}
+        {%- liquid
+          assign has_image = false
+          if product.featured_image
+            assign has_image = true
+          endif
+          assign all_tags_handles = ''
+          for tag in product.tags
+            assign h = tag | handleize
+            assign all_tags_handles = all_tags_handles | append: h | append: ' '
+          endfor
+          assign all_tags_handles = all_tags_handles | strip
+        -%}
+        <article class="product-card product-card--premium" data-tags="{{ all_tags_handles }}">
+          <a href="{{ product.url }}" class="product-card__image-wrap">
+            {%- if has_image -%}
+              <img
+                class="product-card__image"
+                src="{{ product.featured_image | img_url: '600x600', crop: 'center' }}"
+                alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+              {%- if product.images.size > 1 -%}
+                <img
+                  class="product-card__image product-card__image--secondary"
+                  src="{{ product.images[1] | img_url: '600x600', crop: 'center' }}"
+                  alt="{{ product.title | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="600"
+                >
+              {%- endif -%}
+            {%- else -%}
+              <div class="product-card__placeholder" aria-hidden="true">
+                <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18"/><path d="M3 9h18M9 21V9"/>
+                </svg>
+              </div>
+            {%- endif -%}
+            {%- if product.compare_at_price > product.price -%}
+              {%- assign savings_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+              <span class="product-card__sale-badge">-{{ savings_pct }}%</span>
+            {%- endif -%}
+            {%- if product.tags contains 'nuevo' -%}
+              <span class="product-card__badge product-card__badge--new">Nuevo</span>
+            {%- elsif product.tags contains 'mas-vendido' -%}
+              <span class="product-card__badge product-card__badge--top">Top venta</span>
+            {%- endif -%}
+          </a>
+
+          <div class="product-card__body">
+            <a href="{{ product.url }}"><h3 class="product-card__title">{{ product.title }}</h3></a>
+            <p class="product-card__rating">★★★★☆ <span>4.8</span></p>
+
+            <p class="product-card__price">
+              {{ product.price | money }}
+              {%- if product.compare_at_price > product.price -%}
+                <s>{{ product.compare_at_price | money }}</s>
+              {%- endif -%}
+            </p>
+
+            {%- if product.available -%}
+              {%- if product.variants.size == 1 -%}
+                <form action="/cart/add" method="post">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="product-card__btn">Agregar al carrito</button>
+                </form>
+              {%- else -%}
+                <a href="{{ product.url }}" class="product-card__btn product-card__btn--secondary">Ver opciones</a>
+              {%- endif -%}
+            {%- else -%}
+              <button class="product-card__btn" disabled>Agotado</button>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+
+    {%- elsif section.settings.collection == blank -%}
+      {%- for product in collections.all.products limit: products_to_show -%}
+        {%- liquid
+          assign has_image = false
+          if product.featured_image
+            assign has_image = true
+          endif
+          assign all_tags_handles = ''
+          for tag in product.tags
+            assign h = tag | handleize
+            assign all_tags_handles = all_tags_handles | append: h | append: ' '
+          endfor
+          assign all_tags_handles = all_tags_handles | strip
+        -%}
+        <article class="product-card product-card--premium" data-tags="{{ all_tags_handles }}">
+          <a href="{{ product.url }}" class="product-card__image-wrap">
+            {%- if has_image -%}
+              <img
+                class="product-card__image"
+                src="{{ product.featured_image | img_url: '600x600', crop: 'center' }}"
+                alt="{{ product.title | escape }}"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+              {%- if product.images.size > 1 -%}
+                <img
+                  class="product-card__image product-card__image--secondary"
+                  src="{{ product.images[1] | img_url: '600x600', crop: 'center' }}"
+                  alt="{{ product.title | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="600"
+                >
+              {%- endif -%}
+            {%- else -%}
+              <div class="product-card__placeholder" aria-hidden="true">
+                <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18"/><path d="M3 9h18M9 21V9"/>
+                </svg>
+              </div>
+            {%- endif -%}
+            {%- if product.compare_at_price > product.price -%}
+              {%- assign savings_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+              <span class="product-card__sale-badge">-{{ savings_pct }}%</span>
+            {%- endif -%}
+            {%- if product.tags contains 'nuevo' -%}
+              <span class="product-card__badge product-card__badge--new">Nuevo</span>
+            {%- elsif product.tags contains 'mas-vendido' -%}
+              <span class="product-card__badge product-card__badge--top">Top venta</span>
+            {%- endif -%}
+          </a>
+          <div class="product-card__body">
+            <a href="{{ product.url }}"><h3 class="product-card__title">{{ product.title }}</h3></a>
+            <p class="product-card__rating">★★★★☆ <span>4.8</span></p>
+            <p class="product-card__price">
+              {{ product.price | money }}
+              {%- if product.compare_at_price > product.price -%}
+                <s>{{ product.compare_at_price | money }}</s>
+              {%- endif -%}
+            </p>
+            {%- if product.available -%}
+              {%- if product.variants.size == 1 -%}
+                <form action="/cart/add" method="post">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="product-card__btn">Agregar al carrito</button>
+                </form>
+              {%- else -%}
+                <a href="{{ product.url }}" class="product-card__btn product-card__btn--secondary">Ver opciones</a>
+              {%- endif -%}
+            {%- else -%}
+              <button class="product-card__btn" disabled>Agotado</button>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    {%- else -%}
+      <p style="color:var(--color-gray); padding:32px 0; grid-column:1/-1;">No hay productos en esta colección.</p>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_view_all -%}
+    <div class="view-all-wrap">
+      <a href="{{ section.settings.view_all_url | default: '/collections/all' }}" class="hero__cta">
+        {{ section.settings.view_all_label | default: 'Ver todo el catálogo' }}
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  {%- endif -%}
+</section>
+</div>
+
+{% schema %}
+{
+  "name": "Productos Destacados",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto sobre el título",
+      "default": "Catálogo"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título de la sección",
+      "default": "Productos destacados"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Colección a mostrar"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Cantidad de productos",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Mostrar pestañas de filtro",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "filter_tags",
+      "label": "Tags para filtrar (separados por coma)",
+      "default": "computadores, perifericos, audio, cables"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Mostrar botón Ver Todo",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Texto del botón Ver Todo",
+      "default": "Ver todo el catálogo"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "URL del botón Ver Todo"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Productos Destacados",
+      "category": "Productos"
+    }
+  ]
+}
+{% endschema %}
